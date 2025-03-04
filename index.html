@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Section -->
+    <div class="home">
+        <h1>Quiz Website</h1>
+        <!-- <h1>Welcome to the Quiz Game</h1> -->
+        <div class="welcome-message">
+            <h2>Welcome to the simple online quiz game!</h2>
+            <p>What would you like to do?</p>
+            <button class="start-btn">Start Quiz</button>
+        </div>
+    </div>
+    
+    <div class="popup-info" style="display: none;">
+        <h2>Quiz Guide</h2>
+        <p>Follow the instructions carefully and have fun!</p>
+        <span class="info">1. You cannot change your answer once selected.</span><br>
+        <span class="info">2. Points are awarded for correct answers.</span>
+        
+    
+        <div class="btn-group">
+            <button class="info-btn exit-btn">Exit Quiz</button>
+            <button class="info-btn continue-btn">Continue</button>
+        </div>
+    </div>
+    
+    <div class="game-selection" style="display: none;">
+        <h2>Select Game Category</h2>
+        <button class="game-selection-btn" data-category="Tribal">Tribal Knowledge</button>
+        <button class="game-selection-btn" data-category="Sports">Sports</button>
+        <button class="game-selection-btn" data-category="Music">Music</button>
+        <button class="game-selection-btn" data-category="FoodDrink">Food & Drink</button>
+        <button class="game-selection-btn" data-category="Geography">Geography</button>
+        <button class="game-selection-btn" data-category="History">History</button>
+        <button class="game-selection-btn" data-category="Work">Work</button>
+        <button class="go-back-btn">Go Back</button>
+    </div>
+
+    <!-- Quiz Application Section -->
+    <div class="app" style="display: none;">
+        <h2>Quiz</h2>
+        <div id="timer">Time: <span id="time">30</span> seconds</div>
+        <div class="question-number"></div>
+        <div id="question"></div>
+        <div id="answer-buttons" class="btn-grid"></div>
+        <button id="next-btn" class="next-btn" style="display: none;">Continue</button>
+        <button class="go-back-btn">Go Back</button>
+
+    </div>
+
+    <!-- Result Section -->
+<div class="result-box custom-box" style="display: none;">
+    <h2>Your Results</h2>
+    <p class="result-text"></p>
+    <button class="restart-btn">Play Again</button>
+    <button class="go-back-btn">Select Game Category</button>
+    <button class="cancel-btn">Cancel Quiz</button>
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
