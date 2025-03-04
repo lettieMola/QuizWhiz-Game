@@ -7,63 +7,78 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Welcome Section -->
-    <div class="home">
-        <h1>Quiz Website</h1>
-        <!-- <h1>Welcome to the Quiz Game</h1> -->
-        <div class="welcome-message">
-            <h2>Welcome to the simple online quiz game!</h2>
-            <p>What would you like to do?</p>
-            <button class="start-btn">Start Quiz</button>
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="home active">
+            <header>
+                <h1>Quiz Website</h1>
+            </header>
+            <div class="welcome-message">
+                <h2>Welcome to the Simple Online Quiz Game!</h2>
+                <p>What would you like to do?</p>
+                <button id="start-btn" class="button">Start Quiz</button>
+            </div>
         </div>
-    </div>
-    
-    <div class="popup-info" style="display: none;">
-        <h2>Quiz Guide</h2>
-        <p>Follow the instructions carefully and have fun!</p>
-        <span class="info">1. You cannot change your answer once selected.</span><br>
-        <span class="info">2. Points are awarded for correct answers.</span>
         
-    
-        <div class="btn-group">
-            <button class="info-btn exit-btn">Exit Quiz</button>
-            <button class="info-btn continue-btn">Continue</button>
+        <!-- Quiz Guide Popup -->
+        <div class="popup-info hide">
+            <h2>Quiz Guide</h2>
+            <p>Follow the instructions carefully and have fun!</p>
+            <span class="info">1. You cannot change your answer once selected.</span><br>
+            <span class="info">2. Points are awarded for correct answers.</span>
+            <div class="btn-group">
+                <button id="exit-btn-1" class="info-btn exit-btn">Exit Quiz</button>
+                <button id="continue-btn" class="info-btn continue-btn">Continue</button>
+            </div>
+        </div>
+        
+        <!-- Game Selection Section -->
+        <div class="game-selection hide">
+            <h2>Select Game Category</h2>
+            <div class="category-checklist">
+                <label><input type="checkbox" name="category" value="General"> General Knowledge</label>
+                <label><input type="checkbox" name="category" value="Science"> Science</label>
+                <label><input type="checkbox" name="category" value="History"> History</label>
+                <label><input type="checkbox" name="category" value="FoodDrink"> Food & Drinks</label>
+                <label><input type="checkbox" name="category" value="Geography"> Geography</label>
+                <label><input type="checkbox" name="category" value="Tribal"> Tribal Knowledge</label>
+                <label><input type="checkbox" name="category" value="Sports"> Sports</label>
+                <label><input type="checkbox" name="category" value="Music"> Music</label>
+            </div>
+            <button id="start-quiz-btn" class="button">Start Quiz</button>
+            <button id="go-back-btn-1" class="go-back-btn">Go Back</button>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz hide">
+            <div class="quiz-header">
+                <span id="close-icon-1" class="close-icon">&times;</span>
+                <h2>Quiz</h2>
+            </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <div class="timer">Time Left: <span id="time">30</span>s</div>
+            <div class="question"></div>
+            <div class="options"></div>
+            <button id="next-btn" class="button hide">Next</button>
+        </div>
+        
+
+        <!-- Result Section -->
+        <div class="result-box hide">
+            <div class="quiz-header">
+                <span id="close-icon-2" class="close-icon">&times;</span>
+                <h2>Your Results</h2>
+            </div>
+            <p class="result-text"></p>
+            <button id="toggle-answers-btn" class="button">View Correct Answers</button>
+            <div class="missed-questions hide"></div>
+            <button id="restart-btn" class="button">Restart Quiz</button>
+            <button id="go-back-btn-2" class="go-back-btn">Select Game Category</button>
+            <button id="exit-btn-2" class="exit-btn">Exit Quiz</button>
         </div>
     </div>
-    
-    <div class="game-selection" style="display: none;">
-        <h2>Select Game Category</h2>
-        <button class="game-selection-btn" data-category="Tribal">Tribal Knowledge</button>
-        <button class="game-selection-btn" data-category="Sports">Sports</button>
-        <button class="game-selection-btn" data-category="Music">Music</button>
-        <button class="game-selection-btn" data-category="FoodDrink">Food & Drink</button>
-        <button class="game-selection-btn" data-category="Geography">Geography</button>
-        <button class="game-selection-btn" data-category="History">History</button>
-        <button class="game-selection-btn" data-category="Work">Work</button>
-        <button class="go-back-btn">Go Back</button>
-    </div>
-
-    <!-- Quiz Application Section -->
-    <div class="app" style="display: none;">
-        <h2>Quiz</h2>
-        <div id="timer">Time: <span id="time">30</span> seconds</div>
-        <div class="question-number"></div>
-        <div id="question"></div>
-        <div id="answer-buttons" class="btn-grid"></div>
-        <button id="next-btn" class="next-btn" style="display: none;">Continue</button>
-        <button class="go-back-btn">Go Back</button>
-
-    </div>
-
-    <!-- Result Section -->
-<div class="result-box custom-box" style="display: none;">
-    <h2>Your Results</h2>
-    <p class="result-text"></p>
-    <button class="restart-btn">Play Again</button>
-    <button class="go-back-btn">Select Game Category</button>
-    <button class="cancel-btn">Cancel Quiz</button>
-</div>
-
 
     <script src="script.js"></script>
 </body>
