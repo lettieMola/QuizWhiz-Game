@@ -79,6 +79,13 @@ continueBtn.addEventListener('click', () => {
     gameSelection.classList.remove('hide');
 });
 
+   
+
+continueBtn.addEventListener('click', () => {
+    popupInfo.classList.add('hide');
+    gameSelection.classList.remove('hide');
+});
+
 startQuizBtn.addEventListener('click', () => {
     const selectedCategories = [];
     categoryCheckboxes.forEach(checkbox => {
@@ -200,21 +207,26 @@ function loadQuestion() {
 
 // Select Answer
 function selectAnswer(e) {
+    console.log("Answer selected!"); // Debugging
+
     const selectedOption = e.target;
     const correctAnswer = questions[currentQuestionIndex].answer;
 
     // Disable all answer buttons
     Array.from(optionsElement.children).forEach(button => {
         button.disabled = true;
+        console.log("Button disabled:", button.textContent); // Debugging
     });
 
     // Check if the selected answer is correct
     if (selectedOption.textContent === correctAnswer) {
         score++;
         selectedOption.classList.add('correct');
+        console.log("Correct answer selected!"); // Debugging
     } else {
         selectedOption.classList.add('incorrect');
         missedQuestions.push(questions[currentQuestionIndex]);
+        console.log("Incorrect answer selected!"); // Debugging
     }
 
     // Stop the timer and show the "Next" button
@@ -265,6 +277,9 @@ function startTimer() {
         }
     }, 1000);
 }
+
+
+
 
 // Progress Bar
 function updateProgressBar() {
