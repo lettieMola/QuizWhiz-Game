@@ -1,3 +1,7 @@
+// script.js
+
+import { categoryMap, africaQuizData, foodDrinkQuizData } from './questions.js';
+
 // DOM Elements
 const homeSection = document.querySelector('.home');
 const popupInfo = document.querySelector('.popup-info');
@@ -11,8 +15,6 @@ const exitBtn2 = document.getElementById('exit-btn-2');
 const startQuizBtn = document.getElementById('start-quiz-btn');
 const nextBtn = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
-const goBackBtn1 = document.getElementById('go-back-btn-1');
-const goBackBtn2 = document.getElementById('go-back-btn-2');
 const closeIcon1 = document.getElementById('close-icon-1');
 const closeIcon2 = document.getElementById('close-icon-2');
 const categoryCheckboxes = document.querySelectorAll('.category-checklist input[type="checkbox"]');
@@ -23,6 +25,10 @@ const progressBar = document.querySelector('.progress');
 const scoreElement = document.querySelector('.result-text');
 const missedQuestionsElement = document.querySelector('.missed-questions');
 const toggleAnswersBtn = document.getElementById('toggle-answers-btn');
+const loadingElement = document.querySelector('.loading');
+const goBackBtn1 = document.getElementById('go-back-btn-1');
+const goBackBtn2 = document.getElementById('go-back-btn-2');
+const quizHeader = document.querySelector('.quiz-header h2');
 
 // Game Variables
 let questions = [];
@@ -31,42 +37,7 @@ let score = 0;
 let timer;
 let timeLeft = 30;
 let missedQuestions = [];
-
-// Quiz Data
-const quizData = {
-    General: [
-        { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: "Paris" },
-        { question: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter", "Saturn"], answer: "Mars" }
-    ],
-    Science: [
-        { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "NaCl", "O2"], answer: "H2O" },
-        { question: "What is the speed of light?", options: ["300,000 km/s", "150,000 km/s", "450,000 km/s", "600,000 km/s"], answer: "300,000 km/s" }
-    ],
-    History: [
-        { question: "Who was the first President of the United States?", options: ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"], answer: "George Washington" },
-        { question: "In which year did World War II end?", options: ["1945", "1939", "1941", "1950"], answer: "1945" }
-    ],
-    FoodDrink: [
-        { question: "What is sushi traditionally wrapped in?", options: ["Seaweed", "Rice", "Noodles", "Bread"], answer: "Seaweed" },
-        { question: "What is the main ingredient in guacamole?", options: ["Avocado", "Tomato", "Onion", "Pepper"], answer: "Avocado" }
-    ],
-    Geography: [
-        { question: "Which continent is known as the 'Dark Continent'?", options: ["Africa", "Asia", "South America", "Australia"], answer: "Africa" },
-        { question: "Which ocean is the largest?", options: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean"], answer: "Pacific Ocean" }
-    ],
-    Tribal: [
-        { question: "What is the capital of South Africa?", options: ["Cape Town", "Pretoria", "Johannesburg", "Durban"], answer: "Cape Town" },
-        { question: "Which river runs through Egypt?", options: ["Nile", "Amazon", "Yangtze", "Mississippi"], answer: "Nile" }
-    ],
-    Sports: [
-        { question: "How many players are on a soccer team?", options: ["11", "10", "12", "9"], answer: "11" },
-        { question: "Which country hosted the 2016 Summer Olympics?", options: ["Brazil", "Russia", "China", "USA"], answer: "Brazil" }
-    ],
-    Music: [
-        { question: "Who is known as the King of Pop?", options: ["Michael Jackson", "Elvis Presley", "Prince", "Madonna"], answer: "Michael Jackson" },
-        { question: "What musical instrument has 88 keys?", options: ["Piano", "Guitar", "Flute", "Violin"], answer: "Piano" }
-    ]
-};
+let answerSelected = false;
 
 // Event Listeners
 startBtn.addEventListener('click', () => {
@@ -79,108 +50,37 @@ continueBtn.addEventListener('click', () => {
     gameSelection.classList.remove('hide');
 });
 
-   
+startQuizBtn.addEventListener('click', startQuiz);
+nextBtn.addEventListener('click', nextQuestion);
+restartBtn.addEventListener('click', restartQuiz);
+closeIcon1.addEventListener('click', confirmExit);
+closeIcon2.addEventListener('click', confirmExit);
+goBackBtn1.addEventListener('click', goBackToHome);
+goBackBtn2.addEventListener('click', goBackToGameSelection);
+exitBtn1.addEventListener('click', confirmExit);
+exitBtn2.addEventListener('click', confirmExit);
+toggleAnswersBtn.addEventListener('click', toggleAnswers);
 
-continueBtn.addEventListener('click', () => {
-    popupInfo.classList.add('hide');
-    gameSelection.classList.remove('hide');
-});
-
-startQuizBtn.addEventListener('click', () => {
-    const selectedCategories = [];
-    categoryCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            selectedCategories.push(checkbox.value);
-        }
-    });
+// Functions
+async function startQuiz() {
+    const selectedCategories = Array.from(categoryCheckboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
 
     if (selectedCategories.length === 0) {
         alert("Please select at least one category.");
         return;
     }
 
-    // Load questions for the selected categories
-    loadQuestions(selectedCategories);
-});
+    loadingElement.classList.remove('hide');
+    questions = await fetchQuestions(selectedCategories);
+    loadingElement.classList.add('hide');
 
-nextBtn.addEventListener('click', () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        loadQuestion();
-    } else {
-        showResult();
-    }
-});
-
-restartBtn.addEventListener('click', () => {
-    currentQuestionIndex = 0;
-    score = 0;
-    missedQuestions = [];
-    resultBox.classList.add('hide');
-    gameSelection.classList.remove('hide');
-});
-
-// Go Back Buttons
-goBackBtn1.addEventListener('click', () => {
-    gameSelection.classList.add('hide');
-    homeSection.classList.remove('hide');
-});
-
-goBackBtn2.addEventListener('click', () => {
-    resultBox.classList.add('hide');
-    gameSelection.classList.remove('hide');
-});
-
-// Exit Buttons
-exitBtn1.addEventListener('click', () => {
-    if (confirm("Are you sure you want to exit the quiz?")) {
-        location.reload();
-    }
-});
-
-exitBtn2.addEventListener('click', () => {
-    if (confirm("Are you sure you want to exit the quiz?")) {
-        location.reload();
-    }
-});
-
-// Close Icons
-closeIcon1.addEventListener('click', () => {
-    quizSection.classList.add('hide');
-    gameSelection.classList.remove('hide');
-});
-
-closeIcon2.addEventListener('click', () => {
-    resultBox.classList.add('hide');
-    gameSelection.classList.remove('hide');
-});
-
-// Toggle Correct Answers
-toggleAnswersBtn.addEventListener('click', () => {
-    missedQuestionsElement.classList.toggle('hide');
-    if (missedQuestionsElement.classList.contains('hide')) {
-        toggleAnswersBtn.textContent = "View Correct Answers";
-    } else {
-        toggleAnswersBtn.textContent = "Hide Correct Answers";
-    }
-});
-
-// Load Questions
-function loadQuestions(selectedCategories) {
-    let allQuestions = [];
-    selectedCategories.forEach(category => {
-        if (quizData[category]) {
-            allQuestions = allQuestions.concat(quizData[category]);
-        }
-    });
-
-    if (allQuestions.length === 0) {
-        alert("No questions found for the selected categories.");
+    if (questions.length === 0) {
+        alert("Failed to load questions. Please try again.");
         return;
     }
 
-    // Shuffle questions for randomness
-    questions = shuffleArray(allQuestions);
     currentQuestionIndex = 0;
     score = 0;
     missedQuestions = [];
@@ -189,81 +89,164 @@ function loadQuestions(selectedCategories) {
     loadQuestion();
 }
 
-// Load Question
+async function fetchQuestions(selectedCategories) {
+    let questions = [];
+    for (const category of selectedCategories) {
+        const apiCategoryId = categoryMap[category];
+        const apiQuestions = await fetchApiQuestions(apiCategoryId, "medium", 5);
+        const transformedQuestions = transformApiQuestions(apiQuestions, category);
+        questions = questions.concat(transformedQuestions);
+    }
+
+    if (selectedCategories.includes("Geography") || selectedCategories.includes("Tribal")) {
+        questions = questions.concat(africaQuizData);
+    }
+
+    if (selectedCategories.includes("FoodDrink")) {
+        questions = questions.concat(foodDrinkQuizData);
+    }
+
+    return questions.filter(question => selectedCategories.includes(question.category));
+}
+
+async function fetchApiQuestions(category, difficulty, amount = 5) {
+    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error("Error fetching questions:", error);
+        return [];
+    }
+}
+
+function transformApiQuestions(apiQuestions, category) {
+    return apiQuestions.map(question => ({
+        type: question.type === "multiple" ? "multiple-choice" : "true-false",
+        question: decodeHtmlEntities(question.question),
+        options: question.type === "multiple" ? shuffleArray([...question.incorrect_answers, question.correct_answer]) : ["True", "False"],
+        answer: question.correct_answer,
+        category: category
+    }));
+}
+
+function decodeHtmlEntities(text) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
+}
+
 function loadQuestion() {
     resetState();
+    clearInterval(timer);
+    answerSelected = false;
     const currentQuestion = questions[currentQuestionIndex];
-    questionElement.textContent = currentQuestion.question;
-    currentQuestion.options.forEach(option => {
-        const button = document.createElement('div');
-        button.classList.add('option');
-        button.textContent = option;
-        button.addEventListener('click', selectAnswer);
-        optionsElement.appendChild(button);
-    });
+    quizHeader.textContent = `Quiz - Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    questionElement.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+
+    switch (currentQuestion.type) {
+        case "multiple-choice":
+            loadMultipleChoiceQuestion(currentQuestion);
+            break;
+        case "true-false":
+            loadTrueFalseQuestion(currentQuestion);
+            break;
+        case "fill-in-the-blank":
+            loadFillInTheBlankQuestion(currentQuestion);
+            break;
+        default:
+            console.error("Unknown question type:", currentQuestion.type);
+            return;
+    }
+
     startTimer();
     updateProgressBar();
 }
 
-// Select Answer
-function selectAnswer(e) {
-    console.log("Answer selected!"); // Debugging
+function loadMultipleChoiceQuestion(question) {
+    question.options.forEach(option => {
+        const button = document.createElement('div');
+        button.classList.add('option');
+        button.textContent = option;
+        button.addEventListener('click', () => selectAnswer(option, question.answer));
+        optionsElement.appendChild(button);
+    });
+}
 
-    const selectedOption = e.target;
-    const correctAnswer = questions[currentQuestionIndex].answer;
+function loadTrueFalseQuestion(question) {
+    const trueButton = document.createElement('div');
+    trueButton.classList.add('option');
+    trueButton.textContent = "True";
+    trueButton.addEventListener('click', () => selectAnswer("True", question.answer));
+    optionsElement.appendChild(trueButton);
 
-    // Disable all answer buttons
+    const falseButton = document.createElement('div');
+    falseButton.classList.add('option');
+    falseButton.textContent = "False";
+    falseButton.addEventListener('click', () => selectAnswer("False", question.answer));
+    optionsElement.appendChild(falseButton);
+}
+
+function loadFillInTheBlankQuestion(question) {
+    const input = document.createElement('input');
+    input.type = "text";
+    input.placeholder = "Type your answer here...";
+    input.classList.add('fill-in-blank');
+    optionsElement.appendChild(input);
+
+    const submitButton = document.createElement('button');
+    submitButton.textContent = "Submit";
+    submitButton.addEventListener('click', () => {
+        const userAnswer = input.value.trim();
+        selectAnswer(userAnswer, question.answer);
+    });
+    optionsElement.appendChild(submitButton);
+}
+
+function selectAnswer(userAnswer, correctAnswer) {
+    if (answerSelected) return;
+    answerSelected = true;
+
     Array.from(optionsElement.children).forEach(button => {
-        button.disabled = true;
-        console.log("Button disabled:", button.textContent); // Debugging
+        button.removeEventListener('click', selectAnswer);
+        button.style.pointerEvents = 'none';
     });
 
-    // Check if the selected answer is correct
-    if (selectedOption.textContent === correctAnswer) {
+    if (userAnswer === correctAnswer) {
         score++;
-        selectedOption.classList.add('correct');
-        console.log("Correct answer selected!"); // Debugging
     } else {
-        selectedOption.classList.add('incorrect');
         missedQuestions.push(questions[currentQuestionIndex]);
-        console.log("Incorrect answer selected!"); // Debugging
     }
 
-    // Stop the timer and show the "Next" button
     clearInterval(timer);
     nextBtn.classList.remove('hide');
 }
 
-// Show Result
 function showResult() {
     quizSection.classList.add('hide');
     resultBox.classList.remove('hide');
     scoreElement.textContent = `You scored ${score} out of ${questions.length}`;
 
-    // Clear previous missed questions
     missedQuestionsElement.innerHTML = '';
-
-    // Display missed questions
     if (missedQuestions.length > 0) {
-        missedQuestions.forEach(question => {
+        missedQuestions.forEach((question, index) => {
             const div = document.createElement('div');
-            div.textContent = `Q: ${question.question} - Correct Answer: ${question.answer}`;
+            div.innerHTML = `
+                <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
+                <p><strong>Correct Answer:</strong> ${question.answer}</p>
+                <hr>
+            `;
             missedQuestionsElement.appendChild(div);
         });
-
-        // Show the "View Correct Answers" button
         toggleAnswersBtn.classList.remove('hide');
-        toggleAnswersBtn.textContent = "View Correct Answers";
     } else {
-        // Hide the "View Correct Answers" button if no missed questions
         toggleAnswersBtn.classList.add('hide');
     }
 
-    // Hide missed questions by default
     missedQuestionsElement.classList.add('hide');
 }
 
-// Timer
 function startTimer() {
     timeLeft = 30;
     timerElement.textContent = timeLeft;
@@ -272,22 +255,20 @@ function startTimer() {
         timerElement.textContent = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timer);
-            missedQuestions.push(questions[currentQuestionIndex]);
+            if (!answerSelected) {
+                missedQuestions.push(questions[currentQuestionIndex]);
+            }
             nextBtn.classList.remove('hide');
+            nextBtn.click();
         }
     }, 1000);
 }
 
-
-
-
-// Progress Bar
 function updateProgressBar() {
     const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
     progressBar.style.width = `${progress}%`;
 }
 
-// Reset State
 function resetState() {
     nextBtn.classList.add('hide');
     while (optionsElement.firstChild) {
@@ -295,11 +276,52 @@ function resetState() {
     }
 }
 
-// Helper function to shuffle an array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    missedQuestions = [];
+    resultBox.classList.add('hide');
+    gameSelection.classList.remove('hide');
+}
+
+function confirmExit() {
+    if (confirm("Are you sure you want to exit the quiz?")) {
+        location.reload();
+    }
+}
+
+function goBackToHome() {
+    gameSelection.classList.add('hide');
+    homeSection.classList.remove('hide');
+}
+
+function goBackToGameSelection() {
+    resultBox.classList.add('hide');
+    gameSelection.classList.remove('hide');
+}
+
+function toggleAnswers() {
+    missedQuestionsElement.classList.toggle('hide');
+    if (missedQuestionsElement.classList.contains('hide')) {
+        toggleAnswersBtn.textContent = "View Correct Answers";
+    } else {
+        toggleAnswersBtn.textContent = "Hide Correct Answers";
+    }
 }

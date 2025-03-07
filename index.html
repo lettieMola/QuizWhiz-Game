@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -13,25 +14,33 @@
             <header>
                 <h1>Quiz Website</h1>
             </header>
+            <div class="quiz-animation">
+                <img src="assests/pic.png" alt="Quiz Icon" class="animated-icon">
+            </div>
             <div class="welcome-message">
                 <h2>Welcome to the Simple Online Quiz Game!</h2>
                 <p>What would you like to do?</p>
-                <button id="start-btn" class="start-btn">Start-Quiz</button>
+                <button id="start-btn" class="start-btn">Start Quiz</button>
             </div>
         </div>
-        
+
         <!-- Quiz Guide Popup -->
         <div class="popup-info hide">
             <h2>Quiz Guide</h2>
             <p>Follow the instructions carefully and have fun!</p>
-            <span class="info">1. You cannot change your answer once selected.</span><br>
-            <span class="info">2. Points are awarded for correct answers.</span>
+            <span class="info">1. Read each question carefully.</span>
+            <span class="info">2. Work quickly; the quiz is timed.</span>
+            <span class="info">3. Points are awarded for correct answers.</span>
+            <span class="info">4. You cannot change your answer once selected.</span>
+            <span class="info">5. You can restart the quiz or exit the game from the results screen.</span>
+            <span class="info">6. After completing the quiz, view your score and review missed questions.</span>
+           
             <div class="btn-group">
                 <button id="exit-btn-1" class="info-btn exit-btn">Exit Quiz</button>
                 <button id="continue-btn" class="info-btn continue-btn">Continue</button>
             </div>
         </div>
-        
+
         <!-- Game Selection Section -->
         <div class="game-selection hide">
             <h2>Select Game Category</h2>
@@ -45,9 +54,10 @@
                 <label><input type="checkbox" name="category" value="Sports"> Sports</label>
                 <label><input type="checkbox" name="category" value="Music"> Music</label>
             </div>
-            <button id="start-quiz-btn" class="start-quiz-btn">Start</button>
-            <button id="go-back-btn-1" class="go-back-btn">Go Back</button>
-
+            <div class="btn-group-next">
+                <button id="start-quiz-btn" class="start-quiz-btn">Start</button>
+                <button id="go-back-btn-1" class="go-back-btn">Go Back</button>
+            </div>
         </div>
 
         <!-- Quiz Section -->
@@ -56,15 +66,17 @@
                 <span id="close-icon-1" class="close-icon">&times;</span>
                 <h2>Quiz</h2>
             </div>
+            <div class="loading hide">
+                <p>Loading questions...</p>
+            </div>
             <div class="progress-bar">
                 <div class="progress"></div>
             </div>
             <div class="timer">Time Left: <span id="time">30</span>s</div>
             <div class="question"></div>
             <div class="options"></div>
-            <button id="next-btn" class="button hide">Next</button>
+            <button id="next-btn" class="next-btn">Next</button>
         </div>
-        
 
         <!-- Result Section -->
         <div class="result-box hide">
@@ -73,14 +85,27 @@
                 <h2>Your Results</h2>
             </div>
             <p class="result-text"></p>
-            <button id="toggle-answers-btn" class="button">View Correct Answers</button>
+            <a id="toggle-answers-btn" class="clickable-link" data-tooltip="Search Correct Answers">
+                <i class="fas fa-search"></i>
+                <span>View Answers</span>
+            </a>
             <div class="missed-questions hide"></div>
-            <button id="restart-btn" class="button">Restart Quiz</button>
-            <button id="go-back-btn-2" class="go-back-btn">Select Game Category</button>
-            <button id="exit-btn-2" class="exit-btn">Exit Quiz</button>
+            <div class="button-group">
+                <button id="restart-btn" class="button" data-tooltip="Restart Quiz">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <button id="go-back-btn-2" class="go-back-btn" data-tooltip="Select Game Category">
+                    <i class="fas fa-list"></i>
+                </button>
+                <button id="exit-btn-2" class="exit-btn" data-tooltip="Exit Quiz">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
     </div>
-
-    <script src="script.js"></script>
+    
+    <script type="module" src="questions.js"></script>
+    <script type="module" src="script.js"></script>
+    
 </body>
 </html>
