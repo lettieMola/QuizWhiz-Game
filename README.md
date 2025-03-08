@@ -52,19 +52,7 @@ Alternatively, use a local server (e.g., VS Code Live Server) to run the project
 
 3. Play the Quiz
 The quiz game should now be running in your browser. Enjoy!
-
-File Structure
-Copy
-quiz-game/
-│
-├── index.html          # Main HTML file
-├── style.css           # Styles for the quiz game
-├── script.js           # JavaScript logic for the quiz
-├── questions.js        # Custom quiz questions and category mapping
-├── README.md           # Project documentation
-└── assets/             # Folder for images and other assets
-    └── pic.png         # Quiz icon image
-Customization
+   
 You can customize the quiz game by:
 
 Adding more categories and questions in questions.js.
