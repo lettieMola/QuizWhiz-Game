@@ -13,7 +13,7 @@ Welcome to the QuizWhiZ Online Game! This is a simple online quiz game where use
 
 - Review Missed Questions: Review the correct answers for questions you missed.
 
-= Responsive Design: Works on both desktop and mobile devices.
+- Responsive Design: Works on both desktop and mobile devices.
 
 ## Technologies Used
 - HTML5: For the structure of the quiz game.
