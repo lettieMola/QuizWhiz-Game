@@ -66,62 +66,76 @@ h1, h2 {
     text-shadow: 0 0 20px rgba(85, 71, 71, 0.3);
 }
 
-.start-btn,
-.start-quiz-btn {
+.start-btn{
     display: block;
     width: 200px;
     padding: 10px;
     margin: 0 auto 10px;
     font-size: 18px;
     text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode',
+     Geneva, Verdana, sans-serif;
     background-color: #0c887eea;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-
-
-
-.start-btn:focus,
-.start-quiz-btn:focus {
+.start-btn:focus{
     outline: none;
+}
+
+.btn-group-next {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #999;
+    margin-top: 10px;
+    padding: 15px 0 7px;
 }
 
 
 /* Common Button Styles */
-.info-btn, .start-quiz-btn, .go-back-btn {
+.start-quiz-btn, .go-back-btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     width: 130px;
     height: 45px;
-    /* border: 2px solid #c40094; */
+    border: 2px solid #990577;
     outline: none;
     border-radius: 6px;
     text-decoration: none;
     font-size: 16px;
+    color: #fff;
     font-weight: 600;
-    /* color: #fff; */
-    /* background-color: #c40094; */
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    margin: 5px; /* Add some spacing between buttons */
+    transition: .5s;
+    
 }
-
-
-
-
 
 /* Specific Styles for Continue and Start Buttons */
-.start-quiz-btn {
-    background-color: #85075b;
+.start-quiz-btn:hover {
+    background: #66485f;
     color: #fff;
+
 }
 
-.start-quiz-btn:hover {
-    background-color: #463841;
+.go-back-btn {
+    background: transparent;
+    color: #c40094;
+}
+
+
+.start-quiz-btn {
+    background: transparent;
+    color: #c40094;
+}
+
+.go-back-btn:hover {
+    background: #635860;
+    color: #fff;
 }
 
 
@@ -131,6 +145,87 @@ h1, h2 {
 
 .popup-info, .game-selection, .quiz, .result-box {
     margin-top: 20px;
+}
+
+.popup-info .hide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.9);
+    width: 500px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 10px 25px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s ease;
+}
+
+.popup-info.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-info h2 {
+    font-size: 50px;
+    color: #990577;
+    text-align: center;
+}
+
+.popup-info .info {
+    display: inline-block;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    margin: 4px 0;
+}
+
+.popup-info .btn-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #999;
+    margin-top: 10px;
+    padding: 15px 0 7px;
+}
+
+.popup-info .btn-group .info-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 45px;
+    border: 2px solid #990577;
+    outline: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    transition: .5s;
+}
+
+.popup-info .btn-group .info-btn:nth-child(1) {
+    background: transparent;
+    color: #c40094;
+}
+
+.popup-info .btn-group .info-btn:nth-child(1):hover {
+    background: #c40094;
+    color: #fff;
+}
+
+.popup-info .btn-group .info-btn:nth-child(2) {
+    background: transparent;
+    color: #c40094;
+}
+
+.popup-info .btn-group .info-btn:nth-child(2):hover {
+    background: #950170;
+    color: #fff;
 }
 
 .progress-bar {
@@ -154,9 +249,29 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
+.option {
+    padding: 10px;
+    margin: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #cac7c7;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
+.option:hover {
+    background-color: #6cd875;
+}
 
+.option.correct {
+    background-color: #4caf50; /* Green for correct answers */
+    /* color: white; */
+}
 
+.option.incorrect {
+    background-color: #f44336; /* Red for incorrect answers */
+    /* color: white; */
+}
 
 /* Missed Questions Container */
 .missed-questions {
@@ -189,35 +304,9 @@ h1, h2 {
     line-height: 1.5;
 }
 
-
-
 .question {
     font-weight: bold;
     margin-bottom: 20px;
-}
-
-.option {
-    padding: 10px;
-    margin: 5px;
-    background-color: #f1f1f1;
-    border: 1px solid #cac7c7;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.option:hover {
-    background-color: #6cd875;
-}
-
-.option.correct {
-    background-color: #4caf50; /* Green for correct answers */
-    /* color: white; */
-}
-
-.option.incorrect {
-    background-color: #f44336; /* Red for incorrect answers */
-    /* color: white; */
 }
 
 .missed-questions {
@@ -235,13 +324,13 @@ h1, h2 {
     top: 15px; /* Distance from the top */
     right: 15px; /* Distance from the right */
     font-size: 24px; /* Icon size */
-    color: #888; /* Icon color */
+    color: #070606; /* Icon color */
     cursor: pointer; /* Pointer cursor on hover */
     transition: color 0.3s; /* Smooth color transition */
 }
 
 .close-icon:hover {
-    color: #333; /* Darker color on hover */
+    color: #131212; /* Darker color on hover */
 }
 
 .category-list {
@@ -265,85 +354,25 @@ h1, h2 {
     background-color: #3071a9;
 }
 
-.popup-info .hide {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(.9);
-    width: 500px;
-    background: #fff;
-    border-radius: 6px;
-    padding: 10px 25px;
-    opacity: 0;
-    pointer-events: none;
-    transition: .3s ease;
-}
-
-.popup-info.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.popup-info h2 {
-    font-size: 50px;
-    color: #c40094;
+.loading {
     text-align: center;
+    margin-top: 20px;
 }
 
-.popup-info .info {
-    display: inline-block;
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
-    margin: 4px 0;
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
 }
 
-.popup-info .btn-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #999;
-    margin-top: 10px;
-    padding: 15px 0 7px;
-}
-
-.popup-info .btn-group .info-btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 130px;
-    height: 45px;
-    border: 2px solid #c40094;
-    outline: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 600;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
-    cursor: pointer;
-    transition: .5s;
-}
-
-.popup-info .btn-group .info-btn:nth-child(1) {
-    background: transparent;
-    color: #c40094;
-}
-
-.popup-info .btn-group .info-btn:nth-child(1):hover {
-    background: #c40094;
-    color: #fff;
-}
-
-.popup-info .btn-group .info-btn:nth-child(2) {
-    background: transparent;
-    color: #c40094;
-}
-
-.popup-info .btn-group .info-btn:nth-child(2):hover {
-    background: #950170;
-    color: #fff;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 #toggle-answers-btn {
@@ -429,27 +458,10 @@ h1, h2 {
     visibility: visible;
 }
 
-/* Go Back Button */
-.go-back-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    background-color: #6c757d; /* Gray color for "Go Back" */
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: inline-block;
-    margin: 10px;
-}
-
-.go-back-btn:hover {
-    background-color: #5a6268; /* Darker gray on hover */
-}
-
 /* Next Button */
 .next-btn {
     padding: 10px 20px;
+    width: 90px;
     font-size: 16px;
     border-radius: 5px;
     background-color: #053750; /* Green color for "Next" */
@@ -490,47 +502,35 @@ h1, h2 {
     font-size: 20px;
 }
 
-
-.quiz-animation {
-    margin: 20px 0; /* Add spacing above and below the animation */
-    text-align: center; /* Center the animation */
-}
-
-.animated-icon {
-    width: 100px; /* Set the size of the icon */
-    height: 100px;
-    animation: bounce 2s infinite; /* Apply the bounce animation */
-}
-
 /* Style for the Fill-in-the-Blank Input Field */
 .fill-in-blank {
-    width: 100%; /* Full width */
-    padding: 10px; /* Padding for better spacing */
-    font-size: 16px; /* Font size */
-    border: 2px solid #c40094; /* Border color */
-    border-radius: 6px; /* Rounded corners */
-    outline: none; /* Remove default outline */
-    margin-bottom: 10px; /* Space below the input */
-    transition: border-color 0.3s; /* Smooth transition for hover/focus */
+    width: 90%; 
+    padding: 10px; 
+    font-size: 16px; 
+    border: 2px solid #705469; 
+    border-radius: 6px; 
+    outline: none; 
+    margin-bottom: 10px; 
+    transition: border-color 0.3s; 
 }
 
 /* Hover and Focus Effects for Input Field */
 .fill-in-blank:hover,
 .fill-in-blank:focus {
-    border-color: #950170; /* Darker border color on hover/focus */
+    border-color: #3f313b; 
 }
 
 /* Style for the Submit Button */
 .fill-in-blank + button {
-    width: 100%; /* Full width */
-    padding: 10px; /* Padding for better spacing */
-    font-size: 16px; /* Font size */
-    font-weight: 600; /* Bold text */
-    color: #fff; /* White text */
-    background-color: #c40094; /* Background color */
-    border: 2px solid #c40094; /* Border color */
-    border-radius: 6px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
+    width: 90px; 
+    padding: 10px; 
+    font-size: 16px;
+    font-weight: 600; 
+    color: #fff;
+    background-color: #94798e; 
+    border: 2px solid #7a6f78; 
+    border-radius: 6px;
+    cursor: pointer; 
     transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
 }
 
@@ -540,11 +540,14 @@ h1, h2 {
     border-color: #950170; /* Darker border on hover */
 }
 
-/* @keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px); 
-    }
-} */
+
+.quiz-animation {
+    margin: 20px 0; /* Add spacing above and below the animation */
+    text-align: center; /* Center the animation */
+}
+
+.animated-icon {
+    width: 100px; 
+    height: 100px;
+    animation: bounce 2s infinite; /* Apply the bounce animation */
+}

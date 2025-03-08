@@ -1,6 +1,6 @@
 // script.js
 
-import { categoryMap, africaQuizData, foodDrinkQuizData } from './questions.js';
+import { categoryMap, africaQuizData, foodDrinkQuizData, carsQuizData } from './questions.js';
 
 // DOM Elements
 const homeSection = document.querySelector('.home');
@@ -29,6 +29,7 @@ const loadingElement = document.querySelector('.loading');
 const goBackBtn1 = document.getElementById('go-back-btn-1');
 const goBackBtn2 = document.getElementById('go-back-btn-2');
 const quizHeader = document.querySelector('.quiz-header h2');
+
 
 // Game Variables
 let questions = [];
@@ -61,7 +62,6 @@ exitBtn1.addEventListener('click', confirmExit);
 exitBtn2.addEventListener('click', confirmExit);
 toggleAnswersBtn.addEventListener('click', toggleAnswers);
 
-// Functions
 async function startQuiz() {
     const selectedCategories = Array.from(categoryCheckboxes)
         .filter(checkbox => checkbox.checked)
@@ -89,11 +89,32 @@ async function startQuiz() {
     loadQuestion();
 }
 
+
+async function fetchApiQuestions(category, difficulty, amount = 5) {
+    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
+    
+    // Timeout after 5 seconds
+    const timeout = 5000;
+    const fetchPromise = fetch(apiUrl);
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Request timed out")), timeout)
+    );
+
+    try {
+        const response = await Promise.race([fetchPromise, timeoutPromise]);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error("Error fetching questions:", error);
+        return [];
+    }
+}
+
 async function fetchQuestions(selectedCategories) {
     let questions = [];
     for (const category of selectedCategories) {
         const apiCategoryId = categoryMap[category];
-        const apiQuestions = await fetchApiQuestions(apiCategoryId, "medium", 5);
+        const apiQuestions = await fetchApiQuestions(apiCategoryId, "medium", 10);
         const transformedQuestions = transformApiQuestions(apiQuestions, category);
         questions = questions.concat(transformedQuestions);
     }
@@ -105,21 +126,15 @@ async function fetchQuestions(selectedCategories) {
     if (selectedCategories.includes("FoodDrink")) {
         questions = questions.concat(foodDrinkQuizData);
     }
+    if (selectedCategories.includes("Cars")) {
+        questions = questions.concat(carsQuizData);
+    }
 
     return questions.filter(question => selectedCategories.includes(question.category));
 }
 
-async function fetchApiQuestions(category, difficulty, amount = 5) {
-    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        return data.results;
-    } catch (error) {
-        console.error("Error fetching questions:", error);
-        return [];
-    }
-}
+
+
 
 function transformApiQuestions(apiQuestions, category) {
     return apiQuestions.map(question => ({
@@ -136,6 +151,8 @@ function decodeHtmlEntities(text) {
     textArea.innerHTML = text;
     return textArea.value;
 }
+
+
 
 function loadQuestion() {
     resetState();
@@ -213,15 +230,26 @@ function selectAnswer(userAnswer, correctAnswer) {
         button.style.pointerEvents = 'none';
     });
 
-    if (userAnswer === correctAnswer) {
+    // Normalize answers for comparison
+    const normalizedUserAnswer = userAnswer.toString().toLowerCase().trim();
+    const normalizedCorrectAnswer = correctAnswer.toString().toLowerCase().trim();
+
+    console.log("User Answer:", normalizedUserAnswer); // Debugging
+    console.log("Correct Answer:", normalizedCorrectAnswer); // Debugging
+
+    if (normalizedUserAnswer === normalizedCorrectAnswer) {
         score++;
+        console.log("Correct! Score:", score); // Debugging
     } else {
         missedQuestions.push(questions[currentQuestionIndex]);
+        console.log("Incorrect! Missed Questions:", missedQuestions); // Debugging
     }
 
     clearInterval(timer);
     nextBtn.classList.remove('hide');
 }
+
+
 
 function showResult() {
     quizSection.classList.add('hide');
@@ -264,7 +292,12 @@ function startTimer() {
     }, 1000);
 }
 
+
 function updateProgressBar() {
+    if (!progressBar) {
+        console.error("Progress bar element not found!");
+        return;
+    }
     const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
     progressBar.style.width = `${progress}%`;
 }

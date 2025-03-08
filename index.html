@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Game</title>
+    <title>QuizWhiz Online Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -12,14 +12,15 @@
         <!-- Welcome Section -->
         <div class="home active">
             <header>
-                <h1>Quiz Website</h1>
+                <h1>Quiz Game</h1>
             </header>
             <div class="quiz-animation">
                 <img src="assests/pic.png" alt="Quiz Icon" class="animated-icon">
             </div>
             <div class="welcome-message">
-                <h2>Welcome to the Simple Online Quiz Game!</h2>
-                <p>What would you like to do?</p>
+                <h2>Welcome to QuizWhiz</h2>
+                <p>A Simple and Fun Online Quiz Game. Test your knowledge and become a QuizWhiz!</p>
+                <br>
                 <button id="start-btn" class="start-btn">Start Quiz</button>
             </div>
         </div>
@@ -33,6 +34,7 @@
             <span class="info">3. Points are awarded for correct answers.</span>
             <span class="info">4. You cannot change your answer once selected.</span>
             <span class="info">5. You can restart the quiz or exit the game from the results screen.</span>
+            <br>
             <span class="info">6. After completing the quiz, view your score and review missed questions.</span>
            
             <div class="btn-group">
@@ -53,10 +55,12 @@
                 <label><input type="checkbox" name="category" value="Tribal"> Tribal Knowledge</label>
                 <label><input type="checkbox" name="category" value="Sports"> Sports</label>
                 <label><input type="checkbox" name="category" value="Music"> Music</label>
+                <label><input type="checkbox" name="category" value="Cars"> Cars</label>
             </div>
             <div class="btn-group-next">
-                <button id="start-quiz-btn" class="start-quiz-btn">Start</button>
-                <button id="go-back-btn-1" class="go-back-btn">Go Back</button>
+                <button id="go-back-btn-1" class="game-btn go-back-btn">Go Back</button>
+                <button id="start-quiz-btn" class="game-btn start-quiz-btn">Start</button>
+                
             </div>
         </div>
 
@@ -67,6 +71,7 @@
                 <h2>Quiz</h2>
             </div>
             <div class="loading hide">
+                <div class="spinner"></div>
                 <p>Loading questions...</p>
             </div>
             <div class="progress-bar">

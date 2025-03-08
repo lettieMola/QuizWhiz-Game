@@ -1,6 +1,6 @@
 "# QuizWhiz-Game" 
 
-Welcome to the Quiz Game! This is a simple online quiz game where users can test their knowledge in various categories such as General Knowledge, Science, History, Food & Drinks, Geography, Tribal Knowledge, Sports, and Music. The game features multiple-choice, true/false, and fill-in-the-blank questions.
+Welcome to the QuizWhiZ Online Game! This is a simple online quiz game where users can test their knowledge in various categories such as General Knowledge, Science, History, Food & Drinks, Geography, Tribal Knowledge, Sports, and Music. The game features multiple-choice, true/false, and fill-in-the-blank questions.
 
 Features
 Multiple Categories: Choose from a variety of quiz categories.
